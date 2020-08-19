@@ -8,14 +8,14 @@ output:
 
 ## Loading and preprocessing the data
 
-Loading the data in r
+#### Loading the data in r
 
 
 ```r
 loaded_data <- read.csv("./repdata_data_activity/activity.csv")
 ```
 
-Looking at the data to check what to do
+#### Looking at the data to check what to do
 
 
 ```r
@@ -32,7 +32,7 @@ head(loaded_data)
 ## 6    NA 2012-10-01       25
 ```
 
-Lets check the class of the date column of the data set
+#### Lets check the class of the date column of the data set
 
 
 ```r
@@ -43,15 +43,15 @@ class(loaded_data$date)
 ## [1] "character"
 ```
 
-We can see that it is in character format and we need to change it
-to date format
+#### We can see that it is in character format and we need to change it
+#### to date format
 
 
 ```r
 loaded_data$date <- as.Date(loaded_data$date, format = "%Y-%m-%d")
 ```
 
-Checking the class of date now
+#### Checking the class of date now
 
 
 ```r
@@ -62,7 +62,7 @@ class(loaded_data$date)
 ## [1] "Date"
 ```
 
-Great! Now lets see how many NA values are there in the available data
+#### Great! Now lets see how many NA values are there in the available data
 
 
 ```r
@@ -73,8 +73,8 @@ sum(is.na(loaded_data$steps))
 ## [1] 2304
 ```
 
-Removing these values and storing them in a new variable and seeing a few 
-of those values
+#### Removing these values and storing them in a new variable and seeing a few 
+#### of those values
 
 
 ```r
@@ -94,14 +94,14 @@ head(no_na_data)
 
 ## What is mean total number of steps taken per day?
 
-Taking the sum of daily steps taken and storing the 
+#### Taking the sum of daily steps taken and storing the 
 
 
 ```r
 day_vise <- aggregate(steps ~ date, data = no_na_data, FUN = "sum")
 ```
 
-Making a histogram of the total daily steps taken per day
+#### Making a histogram of the total daily steps taken per day
 
 
 ```r
@@ -111,7 +111,7 @@ hist(day_vise$steps, main="Total steps", xlab="Steps", ylab="Days",
 
 ![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
-Saving this histogram as a png file in figures folder
+#### Saving this histogram as a png file in figures folder
 
 
 ```r
@@ -126,7 +126,7 @@ dev.off()
 ##   2
 ```
 
-Calculating the mean and median of total number of steps taken daily
+#### Calculating the mean and median of total number of steps taken daily
 
 
 ```r
@@ -148,15 +148,15 @@ median(day_vise$steps)
 
 ## What is the average daily activity pattern?
 
-Taking the the average number of taken per time interval and storing the
-results in a variable named averages
+#### Taking the the average number of taken per time interval and storing the
+#### results in a variable named averages
 
 
 ```r
 averages <- aggregate(steps ~ interval, data = no_na_data, FUN = "mean")
 ```
 
-Plotting the averages of the 5 minute time intervals
+#### Plotting the averages of the 5 minute time intervals
 
 
 ```r
@@ -168,7 +168,7 @@ with(averages, plot(interval, steps, type = "l", xlab = "Intervals",
 
 ![](PA1_template_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
 
-Saving the plotted figure in figures folder as plot2
+#### Saving the plotted figure in figures folder as plot2
 
 
 ```r
@@ -185,8 +185,8 @@ dev.off()
 ##   2
 ```
 
-Getting the time interval which on average has the most number of steps across 
-all days
+#### Getting the time interval which on average has the most number of steps 
+#### across all days
 
 
 ```r
@@ -200,13 +200,13 @@ averages$interval[which.max(averages$steps)]
 
 ## Imputing missing values
 
-We have currently been working with the data set with no missing values,
-but now we must input appropriate values in place of those NAs
+#### We have currently been working with the data set with no missing values,
+#### but now we must input appropriate values in place of those NAs
 
-To input the missing values in the given data set, we must first devise a
-strategy as to how we will calculate the expected minimum values
+#### To input the missing values in the given data set, we must first devise a
+#### strategy as to how we will calculate the expected minimum values
 
-At first lets take a look at the number of missing values and its percentage
+#### At first lets take a look at the number of missing values and its percentage
 
 
 ```r
@@ -225,8 +225,8 @@ mean(is.na(loaded_data))*100
 ## [1] 4.371585
 ```
 
-To replace all the NA values, in this case I am using the average steps
-per interval
+#### To replace all the NA values, in this case I am using the average steps
+#### per interval
 
 
 ```r
@@ -258,7 +258,9 @@ replaced_na <- merged_data[, c("interval", "steps.x", "date")]
 colnames(replaced_na) <- c("interval", "steps", "date")
 ```
 
-Now calculate the total number of new steps everyday and plotting a histogram
+#### Now calculate the total number of new steps everyday and 
+#### plotting a histogram
+
 
 ```r
 total_steps <- aggregate(steps ~ date, data = replaced_na, FUN = "sum")
@@ -269,7 +271,8 @@ with(total_steps, hist(steps, main = "Total Steps with no NA value",
 
 ![](PA1_template_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
-Now storing this histogram in figures folder as plot3
+#### Now storing this histogram in figures folder as plot3
+
 
 ```r
 png(filename = "figures/plot3.png", width = 480, height = 480)
@@ -284,7 +287,7 @@ dev.off()
 ##   2
 ```
 
-Calculating the mean and median of the new total number of daily steps
+#### Calculating the mean and median of the new total number of daily steps
 
 
 ```r
@@ -303,7 +306,8 @@ median(total_steps$steps)
 ## [1] 10766.19
 ```
 
-Difference in the mean and median of the two data sets
+#### Difference in the mean and median of the two data sets
+
 
 ```r
 mean(total_steps$steps) - mean(day_vise$steps)
@@ -321,16 +325,16 @@ median(total_steps$steps) - median(day_vise$steps)
 ## [1] 1.188679
 ```
 
-As we can see that there is no difference in the mean and only around
-an increase of 1 in the median.
-The basic reason for that is that we only replaced the NA values with the
-mean values keeping the mean still the same and has a very little impact on the 
-median as well.
+#### As we can see that there is no difference in the mean and only around
+#### an increase of 1 in the median.
+#### The basic reason for that is that we only replaced the NA values with the
+#### mean values keeping the mean still the same and has a very little
+#### impact on the median as well.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-To find the difference in the weekday and weekend data lets first store
-these values in different variables
+#### To find the difference in the weekday and weekend data lets first store
+#### these values in different variables
 
 
 ```r
@@ -341,7 +345,8 @@ mean_weekday <- aggregate(steps ~ interval , data = weekday_data, FUN = "mean")
 mean_weekend <- aggregate(steps ~ interval , data = weekend_data, FUN = "mean")
 ```
 
-Plotting the data to see the difference in the stats of weekdays and weekends
+#### Plotting the data to see the difference in the stats
+#### of weekdays and weekends
 
 
 ```r
@@ -358,7 +363,7 @@ with(mean_weekend, plot(interval, steps, type = "l", xlab = "Intervals",
 
 ![](PA1_template_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
-Now saving the plot as plot4
+#### Now saving the plot as plot4
 
 
 ```r
